@@ -5,8 +5,8 @@ control_files = ['js_runit_controller.rb']
 view_files = ['index.erb']
 
 javascript_path = '/../../../public/javascripts/'
-controller_path = '/../../../public/javascripts/'
-view_path = '/../../../app/controllers/'
+controller_path = '/../../../app/controllers/'
+view_path = '/../../../app/views/js_runit/'
 
 def delete(path, files, msg)
   h_f = "--------------------------------------"
@@ -14,9 +14,9 @@ def delete(path, files, msg)
   puts "Deleting " + msg + " . . ."
   puts "         " + h_f
 
-  for file in files
-    puts "         " + file
-    FileUtils.remove_file(Dir[File.dirname(__FILE__) + path + file])
+  files.each do |file|
+    puts "         " + path + file
+    FileUtils.remove_file(File.dirname(__FILE__) + path + file)
   end
 
   puts "         " + h_f
@@ -31,5 +31,5 @@ delete(view_path, view_files, "View")
 
 puts "Deleting view directory for js_runit . . ."
 #TODO delete_view_dir
-FileUtils.remove_file(view_path + 'js_runit')
+FileUtils.rmdir(File.dirname(__FILE__) + view_path)
 puts ". . . Done"
