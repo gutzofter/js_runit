@@ -7,6 +7,8 @@ Just a little unit tester. Very basic, but it does the job.
 Example
 =======
 
+Execute: ruby install.rb
+
 Netbeans:
 open index.rhtml in \app\view\js_runit. Run file.
 
