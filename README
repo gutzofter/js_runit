@@ -19,6 +19,13 @@ Open web browser. Enter URL: http://localhost:3000/js_runit/index
 
 Make changes to tested code. Hit refresh to re-execute tests.
 
+Note
+=======
+
+Original code written by Troy Taft, for use with aspx.
+Check out Troy's test-infected site: http://www.testdrivenjavascript.com/TestDrivenJavaScript/Default.aspx
+
+Check out my blog: http://uglyweb.wordpress.com
 
 Copyright (c) 2006 [Troy Taft], released under the ValleyHighlands Free License
 Copyright (c) 2009 [gutzofter@yahoo.com], released under the MIT license
