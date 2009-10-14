@@ -1,0 +1,22 @@
+js_runit 0.1
+=======
+
+Just a little unit tester. Very basic, but it does the job.
+
+
+Example
+=======
+
+Netbeans:
+open index.rhtml in \app\view\js_runit. Run file.
+
+-or-
+
+Execute at command line: ruby script/server.
+Open web browser. Enter URL: http://localhost:3000/js_runit/index
+
+Make changes to tested code. Hit refresh to re-execute tests.
+
+
+Copyright (c) 2006 [Troy Taft], released under the ValleyHighlands Free License
+Copyright (c) 2009 [gutzofter@yahoo.com], released under the MIT license
