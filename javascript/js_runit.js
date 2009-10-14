@@ -71,29 +71,30 @@ function newTestDisplay() {
 
     TestDisplay.LogFailingAssertion = function(CaseName, TestTitle) {
         this.TestsPass = false;
-        this.OutputBuffer += "<LI style=\"color: red\">";
-        this.OutputBuffer += TestTitle + ": Failed. " + "(" + CaseName + ")";
-        this.OutputBuffer += "</LI>\n";
+        this.OutputBuffer += "<div>";
+        if(TestTitle) {
+            this.OutputBuffer += TestTitle + " --> ";
+        }
+        this.OutputBuffer += "Failed: " + "<b style=\"color: red\">" + CaseName + "</b>";
+        this.OutputBuffer += "</div>\n";
     }
 
     TestDisplay.LogFailingEqualsAssertion = function(CaseName, Expected, Actual, TestTitle) {
         this.TestsPass = false;
-        this.OutputBuffer += "<li>";
+        this.OutputBuffer += "<div>";
         if(TestTitle) {
             this.OutputBuffer += TestTitle + " --> ";
         }
         this.OutputBuffer += "Failed: " + "<b style=\"color: red\">" + CaseName + "</b>";
         this.OutputBuffer += "<ul>\n";
         this.OutputBuffer += "<li>";
-//        this.OutputBuffer += "Expected: " + escape(Expected);
         this.OutputBuffer += "Expected: &nbsp;" + Expected;
         this.OutputBuffer += "</li>\n";
         this.OutputBuffer += "<li>";
-//        this.OutputBuffer += "Was :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + escape(Actual);
         this.OutputBuffer += "Actual :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Actual;
         this.OutputBuffer += "</li>\n";
         this.OutputBuffer += "</ul>\n";
-        this.OutputBuffer += "</LI>\n";
+        this.OutputBuffer += "</div>\n";
     }
 
     TestDisplay.LogErrorException = function(caseName, exception) {
@@ -136,191 +137,93 @@ function newTestDisplay() {
     return TestDisplay;
 }
 
-function test(testName) {
+function should(testName) {
 //need to figure out how to change to remove duplicatiion
 
     var Test = new Object;
-    Test.Name = testName;
+    Test.name = testName;
     registry.AddTest(Test);
 
-    Test.SetUpDisplay = function(TestDisplay) {
+    Test.setUpDisplay = function(TestDisplay) {
         this.TestDisplay = TestDisplay;
     }
 
-    Test.ExecuteWithCatch = function() {
+    Test.executeWithCatch = function() {
         try {
-            this.Execute();
+            this.test();
         }
         catch(e) {
-            this.TestDisplay.LogErrorException(this.Name, e);
+            this.TestDisplay.LogErrorException(this.name, e);
         }
     }
 
-    Test.should = function() {}
+    Test.test = function() {}
 
-    Test.Execute = function() {
-        this.should();
-    }
-
-    Test.TearDown = function() {
+    Test.tearDown = function() {
         this.TestDisplay.IncrementTestCounter();
     }
 
     Test.TestCount = function() {return 1;}
 
-    Test.Assert = function(Test, Title) {
+    Test.assert = function(Test, Title) {
         if (Test) {
-            this.TestDisplay.LogPassingAssertion(this.Name, Title);
+            this.TestDisplay.LogPassingAssertion(this.name, Title);
         } else {
-            this.TestDisplay.LogFailingAssertion(this.Name, Title);
+            this.TestDisplay.LogFailingAssertion(this.name, Title);
         }
     }
 
-    Test.AreEqual = function(Expected, Actual, Message) {
-        if (Expected == Actual) {
-            this.TestDisplay.LogPassingAssertion(this.Name, Message);
-        } else {
-            this.TestDisplay.LogFailingEqualsAssertion(this.Name, Expected, Actual, Message);
-        }
+    Test.fail = function(Message) {
+        this.assert((false), Message);
     }
-
-    Test.AreNotEqual = function (Expected, Actual, Message) {
-        this.Assert((Expected != Actual), Message);
-    }
-
-    Test.Fail = function(Message) {
-        this.Assert((false), Message);
-    }
-
-    // Need to change from using the fail to regular output with test ban
+    
+    // Need to change from using the fail to regular output with test banner
     Test.debugTrace = function(message) {
-        this.TestDisplay.logTraceMessage(this.Name, message);
+        this.TestDisplay.logTraceMessage(this.name, message);
     }
 
     Test.is = function(test, title) {
-        this.Assert(test, title);
+        this.assert(test, title);
     }
 
     Test.isNot = function(test, title) {
-        this.Assert((test != null), title);
+        this.is((test != null), title);
     }
 
     Test.isFalse = function(test, title) {
-        this.AreNotEqual(true, test, title);
+        this.isNotEqual(true, test, title);
     }
 
-     Test.isTrue = function(test, title) {
-        this.AreEqual(true, test, title);
+     Test.isTrue = function(bool, title) {
+        this.is((true == bool), title);
     }
 
    Test.isEqual = function(expected, actual, message) {
-        this.AreEqual(expected, actual, message);
+        if (expected == actual) {
+            this.TestDisplay.LogPassingAssertion(this.name, message);
+        } else {
+            this.TestDisplay.LogFailingEqualsAssertion(this.name, expected, actual, message);
+        }
     }
 
     Test.isNotEqual = function(expected, actual, message) {
-        this.AreNotEqual(expected, actual, message);
-    }
-
-    Test.fail = function(message) {
-        this.Fail(message);
+        this.assert((expected != actual), message);
     }
 
     return Test;
 
-}
-
-function newTest(testName) {
-    var Test = new Object;
-    Test.Name = testName;
-    registry.AddTest(Test);
-    
-    Test.SetUpDisplay = function(TestDisplay) {
-        this.TestDisplay = TestDisplay;
-    }
-
-    Test.ExecuteWithCatch = function() {
-        try {
-            this.Execute();
-        }
-        catch(e) {
-            this.TestDisplay.LogErrorException(this.Name, e);
-        }
-    }
-
-    Test.Attach = function() {}
-
-    Test.Execute = function() {
-
-        this.Attach();
-    }
-
-    Test.TearDown = function() {
-        this.TestDisplay.IncrementTestCounter();
-    }
-
-    Test.TestCount = function() {return 1;}
-
-    Test.Assert = function(Test, Title) {
-        if (Test) {
-            this.TestDisplay.LogPassingAssertion(this.Name, Title);
-        } else {
-            this.TestDisplay.LogFailingAssertion(this.Name, Title);
-        }
-    }
-    
-    Test.AreEqual = function(Expected, Actual, Message) {
-        if (Expected == Actual) {
-            this.TestDisplay.LogPassingAssertion(this.Name, Message);
-        } else {
-            this.TestDisplay.LogFailingEqualsAssertion(this.Name, Expected, Actual, Message);
-        }
-    }
-    
-    Test.AreNotEqual = function (Expected, Actual, Message) {
-        this.Assert((Expected != Actual), Message);
-    }
-    
-    Test.Fail = function(Message) {
-        this.Assert((false), Message);
-    }
-
-    Test.assert = function(test, title) {
-        this.Assert(test, title);
-    }
-
-    Test.isEqual = function(expected, actual, message) {
-        this.AreEqual(expected, actual, message);
-    }
-
-    Test.isNotEqual = function(expected, actual, message) {
-        this.AreNotEqual(expected, actual, message);
-    }
-
-    Test.fail = function(message) {
-        this.Fail(message);
-    }
-    
-    return Test;
 }
 
 function TestRunner(Test, TestDisplay)
 {
-    Test.SetUpDisplay(TestDisplay);
-    Test.ExecuteWithCatch();
-    Test.TearDown();
+    Test.setUpDisplay(TestDisplay);
+    Test.executeWithCatch();
+    Test.tearDown();
 }
 
 function DisplayAndRunAllTests()
 {
     var thisTestDisplay = newTestDisplay();
-    thisTestDisplay.SetUp();
-    RunAllTests(thisTestDisplay);
-    return thisTestDisplay.Output();
-}
-
-function DisplayAndRunAllTestsInXml()
-{
-    var thisTestDisplay = newXmlTestDisplay();
     thisTestDisplay.SetUp();
     RunAllTests(thisTestDisplay);
     return thisTestDisplay.Output();
@@ -337,62 +240,5 @@ function RunAllTests(aTestDisplay)
 function errorMessage(exception) {
     return '<p>Error: ' + exception.message + '</p>'
             + '<p>@ Line: ' + exception.lineNumber + '</p>';
-}
-
-function newXmlTestDisplay() {
-    var TestDisplay = new Object;
-    TestDisplay.TestCount = 0;
-    TestDisplay.CheckCount = 0;
-    TestDisplay.TestsPass = true;
-    TestDisplay.OutputBuffer = "";
-
-    TestDisplay.SetUp = function() {
-        this.TestCount = 0;
-        this.CheckCount = 0;
-        this.TestsPass = true;
-        this.OutputBuffer = "";
-    }
-
-    TestDisplay.LogFatalError = function(TestCaseName) {
-        this.TestsPass = false;
-        this.OutputBuffer += "<failure>";
-        this.OutputBuffer += "<errorType>fatal</errorType><caseName>" + TestCaseName + "</caseName>";
-        this.OutputBuffer += "</failure>";
-    }
-
-    TestDisplay.IncrementTestCounter = function() {
-        this.TestCount++;
-    }
-
-    TestDisplay.LogPassingAssertion = function(CaseName, TestTitle) {
-        this.CheckCount++;
-    }
-
-    TestDisplay.LogFailingAssertion = function(CaseName, TestTitle) {
-        this.TestsPass = false;
-        this.OutputBuffer += "<failure>";
-        this.OutputBuffer += "<testTitle>" + TestTitle + "</testTitle><caseName>" + CaseName + "</caseName>";
-        this.OutputBuffer += "</failure>";
-    }
-
-    TestDisplay.LogFailingEqualsAssertion = function(CaseName, Expected, Actual, TestTitle) {
-        this.TestsPass = false;
-        this.OutputBuffer += "<failure>";
-        this.OutputBuffer += "<testTitle>" + TestTitle + "</testTitle><caseName>" + CaseName + "</caseName>";
-        this.OutputBuffer += "<expected>" + escape(Expected);
-        this.OutputBuffer += "</expected>";
-        this.OutputBuffer += "<actual>";
-        this.OutputBuffer += escape(Actual) + "</actual>";
-        this.OutputBuffer += "</failure>";
-    }
-
-    TestDisplay.Output = function() {
-        if(this.TestsPass){
-            this.OutputBuffer += "<Pass testCount=\"" + this.TestCount + "\" ";
-            this.OutputBuffer += "checkCount=\"" + this.CheckCount + "\"/>";
-        }
-        return this.OutputBuffer;
-    }
-    return TestDisplay;
 }
 
