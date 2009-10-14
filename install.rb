@@ -1,5 +1,6 @@
 require 'fileutils'
 
+puts IO.read(File.join(directory, ' README' ))
 #Copy the Javascript files
 puts "Copying Javascripts..."
 FileUtils.copy(Dir[File.dirname(__FILE__) + '/javascript/*.js'], File.dirname(__FILE__) + '/../../../public/javascripts/')
