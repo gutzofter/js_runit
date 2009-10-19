@@ -190,12 +190,12 @@ function should(testName) {
         this.is((test != null), title);
     }
 
-    Test.isFalse = function(test, title) {
-        this.isNotEqual(true, test, title);
+    Test.isFalse = function(bool, title) {
+        this.isEqual(false, bool, title);
     }
 
      Test.isTrue = function(bool, title) {
-        this.is((true == bool), title);
+        this.isEqual(true, bool, title);
     }
 
    Test.isEqual = function(expected, actual, message) {
@@ -207,7 +207,11 @@ function should(testName) {
     }
 
     Test.isNotEqual = function(expected, actual, message) {
-        this.assert((expected != actual), message);
+        if (expected != actual) {
+            this.TestDisplay.LogPassingAssertion(this.name, message);
+        } else {
+            this.TestDisplay.LogFailingEqualsAssertion(this.name, expected, actual, message);
+        }
     }
 
     return Test;

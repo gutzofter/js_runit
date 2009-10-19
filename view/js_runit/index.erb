@@ -2,19 +2,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Run All JS//RUnit Tests</title>
     <%= javascript_include_tag 'prototype' %>
     <%= javascript_include_tag 'js_runit' %>
 
-    <%= javascript_include_tag 'js_runit_tests' %>
+    <%= javascript_include_tag 'humble_dialog' %>
+    <%= javascript_include_tag 'testable_bbom' %>
 
+    
+    <%= javascript_include_tag 'fakes' %>
+    <%= javascript_include_tag 'humble_dialog_tests' %>
+    <%= javascript_include_tag 'testable_bbom_tests' %>
+
+<script type="text/javascript" charset="utf-8">
+// this page created by Aaron Albin
+// creation date: October 17, 2009
+
+var score = 0;
+
+</script>
+    
   </head>
   <body onload='displayTests()'>
+
     <div>
       <h3>js_runit 0.1 (Test Results)</h3>
+
       <div id="testDisplayOutput">Some Error Occurred!</div>
+
+      <div><p></p></div>
+
       <div>Refresh browser to run test again.</div>
+
       <div id="parent"></div>
+
     </div>
+
   </body>
 </html>
