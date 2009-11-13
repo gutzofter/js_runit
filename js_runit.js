@@ -246,3 +246,9 @@ function errorMessage(exception) {
             + '<p>@ Line: ' + exception.lineNumber + '</p>';
 }
 
+function displayInit() {
+
+    document.getElementById('testDisplayOutput').innerHTML = DisplayAndRunAllTests();
+
+}
+
