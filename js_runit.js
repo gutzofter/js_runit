@@ -1,11 +1,6 @@
 
 // ============================================================
-//        **** A JSNUnit 2.6 Testing Framework ****
-//
-//          Written by Troy Taft (email@troytaft.com)
-//          (c) Troy Taft, 2006.  Permission is granted to use 
-//          this software freely under the conditions of 
-//          ValleyHighlands Free License.
+//        **** js_runit 0.12.6 Testing Framework ****
 //
 //     Purpose:  The purpose of this code is to encapsulate
 //               objects that are used by the JavaScript Unit
@@ -17,9 +12,6 @@
 //               DisplayAndRunAllTests, and RunAllTests.
 //
 // ============================================================
-//
-//
-//
 
 function newTestRegistry() {
     var TestRegistry = new Object;
