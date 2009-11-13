@@ -7,15 +7,9 @@ Just a little unit tester. Very basic, but it does the job.
 Example
 =======
 
-Execute: ruby install.rb
+Execute: Double-click unit_tests.html file.
 
-Netbeans:
-open index.rhtml in \app\view\js_runit. Run file.
-
--or-
-
-Execute at command line: ruby script/server.
-Open web browser. Enter URL: http://localhost:3000/js_runit/index
+To add test new tests files, edit unit_tests.html file.
 
 Make changes to tested code. Hit refresh to re-execute tests.
 
